@@ -6,23 +6,26 @@ import axios from 'axios';
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const handleSubmit = useCallback(async () => {
-    event.preventDefault();
-    try {
-      const {
-        data: { access_token },
-      } = await axios.put('/api/auth/login', {
-        id: username,
-        password,
-      });
-      if (access_token) {
-        localStorage.setItem('access_token', access_token);
-        alert('로그인 성공');
+  const handleSubmit = useCallback(
+    async (event) => {
+      event.preventDefault();
+      try {
+        const {
+          data: { access_token },
+        } = await axios.post('/api/auth/login', {
+          username,
+          password,
+        });
+        if (access_token) {
+          localStorage.setItem('access_token', access_token);
+          alert('로그인 성공');
+        }
+      } catch (e) {
+        alert('로그인 실패');
       }
-    } catch (e) {
-      alert('로그인 실패');
-    }
-  }, [username, password]);
+    },
+    [username, password],
+  );
 
   return (
     <Container>
